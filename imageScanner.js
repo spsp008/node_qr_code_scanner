@@ -10,7 +10,7 @@ function decodeByFilePath(path) {
   console.log("reading from PATH");
   // Read the image and create a buffer
   // (Here image.png is our QR code)
-  const buffer = fs.readFileSync(__dirname + "/images/" + path);
+  const buffer = fs.readFileSync(__dirname + "/station/images/" + path);
   return decode(buffer);
 }
 
@@ -46,7 +46,9 @@ function decode(source) {
         };
         // Decoding the QR code
         // console.log(image);
-        qrcode.decode(image.bitmap);
+        if (image) {
+          qrcode.decode(image.bitmap);
+        }
       });
     } catch(err) {
       reject(err);
