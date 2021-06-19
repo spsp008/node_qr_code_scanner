@@ -33,8 +33,8 @@ app.post("/decode", upload.single("media"), async (req, res) => {
   try {
     let url = null;
 
-    if (req.body.media_url) {
-      url = req.body.media_url;
+    if (req.body.media_url && req.body.media_url.trim()) {
+      url = req.body.media_url.trim();
     } else if (req.file) {
       url = `http://localhost:${PORT}/images/${req.file.filename}`;
     }
@@ -54,9 +54,10 @@ app.post("/decode", upload.single("media"), async (req, res) => {
       image_url: url,
     });
   } catch(err) {
+    const message = err && err.message ? err.message : APP_CONSTANTS.ERRORS.SOMETHING_WENT_WRONG;
     res.json({
       success: false,
-      message: err
+      message
     })
   }
 });
