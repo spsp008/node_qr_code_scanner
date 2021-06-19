@@ -64,7 +64,7 @@ app.post("/decode", upload.single("media"), async (req, res) => {
       image_url: url,
     });
   } catch(err) {
-    const message = err && err.message ? err.message : APP_CONSTANTS.ERRORS.SOMETHING_WENT_WRONG;
+    const message = err.message ? err.message : err ? err : APP_CONSTANTS.ERRORS.SOMETHING_WENT_WRONG;
     return res.json({
       success: false,
       message
