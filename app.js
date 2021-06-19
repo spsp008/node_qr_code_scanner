@@ -27,7 +27,9 @@ const upload = multer({
     fileSize: APP_CONSTANTS.FILE_SIZE
   },
 });
-
+app.get("/test", (req, res) => {
+  res.send('QR scanner Working!!!');
+})
 app.use("/images", express.static("station/images"));
 app.post("/decode", upload.single("media"), async (req, res) => {
   try {
