@@ -41,7 +41,7 @@ app.post("/decode", upload.single("media"), async (req, res) => {
       url = source;
       isUrl = true;
     } else if (req.file) {
-      url = `http://localhost:${PORT}/images/${req.file.filename}`;
+      url = `${req.protocol}://${req.headers.host}/images/${req.file.filename}`;
       source = req.file.filename;
     }
 
