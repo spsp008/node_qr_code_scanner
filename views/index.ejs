@@ -13,13 +13,13 @@
 
     <title>QR SCANNER</title>
   </head>
-  <body style="background-color: #888;">
+  <body style="background-color: #888; font-size: 14px;">
     <div style=" background-color: #FFF; border: 2px dashed #888; width: 80%; top:50%; left: 50%; transform: translate3d(-50%,-50%, 0); position: absolute; padding: 20px">
-      <h3>QR Scanner</h3>
+      <h3>QR Scanner🔎</h3>
       <form id="form" enctype="multipart/form-data">
         <fieldset class="form-group">
           <div class="row">
-            <legend class="col-form-label col-sm-2 pt-0">Choose source</legend>
+            <legend class="col-form-label col-sm-2 pt-0"><strong style="font-size: 15px;">Choose source</strong></legend>
             <div class="col-sm-10">
               <div class="form-check">
                 <input class="form-check-input" onclick="handleClick(this);" type="radio" name="gridRadios" id="gridRadios1" value="image" checked>
@@ -37,22 +37,22 @@
           </div>
         </fieldset>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="media">Select image</label>
+          <label class="col-sm-2 col-form-label" for="media"><strong style="font-size: 15px;">Select image</strong></label>
           <div class="col-sm-10" >
             <input type="file" class="form-control-file" style="width: 40%;" name="media" id="media" placeholder=".png, .jpeg">
           </div>
         </div>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="url">Enter image url</label>
+          <label class="col-sm-2 col-form-label" for="url"><strong style="font-size: 15px;">Enter image url</strong></label>
           <div class="col-sm-10">
-            <input  disabled type="input" class="form-control" style="width: 80%;" name="media_url" id="url" placeholder="https://image.png">
+            <input disabled type="input" class="form-control" style="width: 80%; font-size: 14px; font-style: italic;" name="media_url" id="url" placeholder="https://image.png">
           </div>
         </div>
         <div class="form-group">
-          <label for="outputTextArea">Output</label> <span style="font-size: 12px;" class="response-success"></span>
+          <label for="outputTextArea"><strong style="font-size: 15px;">Output</strong></label> <span style="font-size: 12px;" class="response-success"></span>
           <textarea style="font-family: Lucida Console, Courier New, monospace;" placeholder="output text" class="form-control" id="outputTextArea" rows="3"></textarea>
         </div>
-        <button type="button" onclick="submitForm()" class="btn btn-primary">Scan</button>
+        <button type="button" onclick="submitForm()" class="btn btn-primary">Scan 🔎</button>
       </form>
     </div>
 
