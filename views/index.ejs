@@ -59,6 +59,8 @@
   </body>
   <script>
     function submitForm() {
+      let textarea = document.querySelector('textarea');
+      textarea.style.border = '';
       var data = new FormData();
       var choice = document.querySelector('input[name=gridRadios]:checked');
       var inputFile = document.querySelector('input[type="file"]');
@@ -131,6 +133,7 @@
         inputFile.removeAttribute('disabled');
       }
       let textarea = document.querySelector('textarea');
+      textarea.style.border = '';
       textarea.value = '';
       let span = document.querySelector('span[class="response-success"]');
       span.textContent = '';
