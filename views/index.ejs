@@ -19,16 +19,16 @@
       <form id="form" enctype="multipart/form-data">
         <fieldset class="form-group">
           <div class="row">
-            <legend class="col-form-label col-sm-2 pt-0">Choose image source type</legend>
+            <legend class="col-form-label col-sm-2 pt-0">Choose source</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked>
+                <input class="form-check-input" onclick="handleClick(this);" type="radio" name="gridRadios" id="gridRadios1" value="image" checked>
                 <label class="form-check-label" for="gridRadios1">
                   Upload image
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                <input class="form-check-input" onclick="handleClick(this);" type="radio" name="gridRadios" id="gridRadios2" value="url">
                 <label class="form-check-label" for="gridRadios2">
                   Enter Url
                 </label>
@@ -45,11 +45,11 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label" for="url">Enter image url</label>
           <div class="col-sm-10">
-            <input type="input" class="form-control" style="width: 80%;" name="media_url" id="url" placeholder="https://image.png">
+            <input  disabled type="input" class="form-control" style="width: 80%;" name="media_url" id="url" placeholder="https://image.png">
           </div>
         </div>
         <div class="form-group">
-          <label for="outputTextArea">Output</label>
+          <label for="outputTextArea">Output</label> <span style="font-size: 12px;" class="response-success"></span>
           <textarea style="font-family: Lucida Console, Courier New, monospace;" placeholder="output text" class="form-control" id="outputTextArea" rows="3"></textarea>
         </div>
         <button type="button" onclick="submitForm()" class="btn btn-primary">Scan</button>
@@ -59,11 +59,28 @@
   </body>
   <script>
     function submitForm() {
+      var data = new FormData();
+      var choice = document.querySelector('input[name=gridRadios]:checked');
       var inputFile = document.querySelector('input[type="file"]');
       var url = document.querySelector('input[type="input"]');
-      var data = new FormData();
-      data.append('media', inputFile.files[0]);
-      data.append('media_url', url.value);
+      if (choice.value === 'image' && inputFile.files.length) {
+        data.append('media', inputFile.files[0]);
+      } else if (choice.value === 'url' && url.value) {
+        if (isValidUrl(url.value)) {
+          data.append('media_url', url.value);
+        } else {
+          let span = document.querySelector('span[class="response-success"]');
+          span.textContent = 'Invalid URL';
+          span.style.color = 'red';
+          return;
+        }
+      } else {
+        let span = document.querySelector('span[class="response-success"]');
+        span.textContent = 'File or URL is required!';
+        span.style.color = 'red';
+        return;
+      }
+
       const {origin} = document.location;
       fetch(`${origin}/decode`, {
         body: data,
@@ -71,18 +88,56 @@
       })
       .then(res => res.json())
       .then(response => {
+        let span = document.querySelector('span[class="response-success"]');
         let textarea = document.querySelector('textarea');
         if (response.success) {
           textarea.value = response.text;
           textarea.style.border = '1px solid #4fec54';
+          span.textContent = '(Success)';
+          span.style.color = '#4fec54';
         } else {
-          textarea.value = response.message;
+          span.textContent = '(Error)';
+          span.style.color = 'red';
+          if (typeof response.message === 'string') {
+            textarea.value = response.message;
+          } else if (response.message && response.message.message && typeof response.message.message === 'string') {
+            textarea.value = response.message.message;
+          } else {
+            textarea.value = 'Something went wrong!';
+          }
           textarea.style.border = '1px solid red';
         }
       })
       .catch(err => {
         console.error(err);
       });
+    }
+
+    function handleClick(myRadio) {
+      const val = myRadio.value;
+      var inputFile = document.querySelector('input[type="file"]');
+      var url = document.querySelector('input[type="input"]');
+      if (val === 'url') {
+        url.removeAttribute('disabled');
+        inputFile.value = '';
+        inputFile.setAttribute('disabled', true);
+      } else if (val === 'image') {
+        url.setAttribute('disabled', true);
+        url.value = '';
+        inputFile.removeAttribute('disabled');
+      }
+      let textarea = document.querySelector('textarea');
+      textarea.value = '';
+      let span = document.querySelector('span[class="response-success"]');
+      span.textContent = '';
+    }
+
+    function isValidUrl(url) {
+      if (!url) return false;
+      var expression =
+        /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+      var regex = new RegExp(expression);
+      return url.match(regex);
     }
   </script>
 </html>
