@@ -93,6 +93,8 @@
         if (response.success) {
           textarea.value = response.text;
           textarea.style.border = '1px solid #4fec54';
+          textarea.style.height = "1px";
+          textarea.style.height = (25+textarea.scrollHeight)+"px";
           span.textContent = '(Success)';
           span.style.color = '#4fec54';
         } else {
@@ -106,6 +108,8 @@
             textarea.value = 'Something went wrong!';
           }
           textarea.style.border = '1px solid red';
+          textarea.style.height = "1px";
+          textarea.style.height = (25+textarea.scrollHeight)+"px";
         }
       })
       .catch(err => {
