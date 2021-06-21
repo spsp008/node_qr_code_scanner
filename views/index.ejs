@@ -52,7 +52,7 @@
           <label for="outputTextArea"><strong style="font-size: 15px;">Output</strong></label> <span style="font-size: 12px;" class="response-success"></span>
           <textarea style="font-family: Lucida Console, Courier New, monospace;" placeholder="output text" class="form-control" id="outputTextArea" rows="3"></textarea>
         </div>
-        <button type="button" onclick="submitForm()" class="btn btn-primary">Scan 🔎</button>
+        <button type="button" onclick="submitForm()" class="btn btn-primary" style="width: 116px;">Scan 🔎</button>
       </form>
       <div style="text-align: center; margin-top: 5px;">
         © 2021 Copyright:
@@ -88,21 +88,32 @@
       }
 
       const {origin} = document.location;
+
+      let button = document.querySelector('button');
+      button.setAttribute('disabled', true);
+      button.innerText = 'Scanning...';
+
       fetch(`${origin}/decode`, {
         body: data,
         method: "POST"
       })
       .then(res => res.json())
       .then(response => {
+
+        button.removeAttribute('disabled');
+        button.innerText = 'Scan';
         let span = document.querySelector('span[class="response-success"]');
         let textarea = document.querySelector('textarea');
         if (response.success) {
+
           textarea.value = response.text;
           textarea.style.border = '1px solid #4fec54';
           textarea.style.height = "1px";
           textarea.style.height = (25+textarea.scrollHeight)+"px";
+
           span.textContent = '(Success😎)';
           span.style.color = '#4fec54';
+
         } else {
           span.textContent = '(Error😩)';
           span.style.color = 'red';
@@ -119,6 +130,8 @@
         }
       })
       .catch(err => {
+        button.removeAttribute('disabled');
+        button.innerText = 'Scan';
         console.error(err);
       });
     }
@@ -139,6 +152,7 @@
       let textarea = document.querySelector('textarea');
       textarea.style.border = '';
       textarea.value = '';
+
       let span = document.querySelector('span[class="response-success"]');
       span.textContent = '';
     }
