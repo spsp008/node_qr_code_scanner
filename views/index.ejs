@@ -37,7 +37,7 @@
           </div>
         </fieldset>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="media"><strong style="font-size: 15px;">Select image</strong> <span style="font-size: 10px">(png|jpg|jpeg, max size 2MB)</span> </label>
+          <label class="col-sm-2 col-form-label" for="media"><strong style="font-size: 15px;">Select image</strong> <span style="font-size: 10px">(png|jpg|jpeg, max size 3MB)</span> </label>
           <div class="col-sm-10" >
             <input type="file" class="form-control-file" style="width: 40%;" name="media" id="media" placeholder=".png, .jpeg">
           </div>
@@ -65,6 +65,7 @@
     function submitForm() {
       let textarea = document.querySelector('textarea');
       textarea.style.border = '';
+      textarea.value = '';
       var data = new FormData();
       var choice = document.querySelector('input[name=gridRadios]:checked');
       var inputFile = document.querySelector('input[type="file"]');
