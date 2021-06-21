@@ -37,7 +37,7 @@
           </div>
         </fieldset>
         <div class="form-group row">
-          <label class="col-sm-2 col-form-label" for="media"><strong style="font-size: 15px;">Select image</strong></label>
+          <label class="col-sm-2 col-form-label" for="media"><strong style="font-size: 15px;">Select image</strong> <span style="font-size: 10px">(png|jpg|jpeg, max size 2MB)</span> </label>
           <div class="col-sm-10" >
             <input type="file" class="form-control-file" style="width: 40%;" name="media" id="media" placeholder=".png, .jpeg">
           </div>
@@ -70,13 +70,36 @@
       var inputFile = document.querySelector('input[type="file"]');
       var url = document.querySelector('input[type="input"]');
       if (choice.value === 'image' && inputFile.files.length) {
+        if (inputFile.files.length > 1) {
+          let span = document.querySelector('span[class="response-success"]');
+          span.textContent = 'Upload only one file.';
+          span.style.color = 'red';
+          return;
+        }
+        const name = inputFile.files[0].name;
+        const ext = name.substring(name.lastIndexOf('.') + 1);
+        if (!['jpg', 'png', 'jpeg'].includes(ext)) {
+          let span = document.querySelector('span[class="response-success"]');
+          span.textContent = '(Only png, jpg and jpeg files are allowed)';
+          span.style.color = 'red';
+          return;
+        }
+
+        const size = inputFile.files[0].size;
+
+        if (size > 3000000) {
+          let span = document.querySelector('span[class="response-success"]');
+          span.textContent = '(Maximum file size is 3 MB)';
+          span.style.color = 'red';
+          return;
+        }
         data.append('media', inputFile.files[0]);
       } else if (choice.value === 'url' && url.value) {
         if (isValidUrl(url.value)) {
           data.append('media_url', url.value);
         } else {
           let span = document.querySelector('span[class="response-success"]');
-          span.textContent = 'Invalid URL';
+          span.textContent = '(Invalid URL)';
           span.style.color = 'red';
           return;
         }

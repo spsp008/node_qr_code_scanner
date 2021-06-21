@@ -1,6 +1,6 @@
 const APP_CONSTANTS = {
     SHORT_ID_LENGTH: 10,
-    FILE_SIZE: 10000000,
+    FILE_SIZE: 3000000,
     ERRORS: Object.freeze({
         IMAGE_PARSING_ERROR: 'Unable to read image',
         QR_CODE_PASSING_ERROR: 'Unable to decode image',
